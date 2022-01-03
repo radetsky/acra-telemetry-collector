@@ -3,11 +3,9 @@ Acra Telemetry collector was created to get a convenient and simple tool for tra
 
 # Using 
 
-## Install and run 
-
+## Install
 ```
 git clone git@github.com:radetsky/acra-telemetry-collector.git
-docker-compose up 
 ```
 
 ## Setup Acra Server logging options 
@@ -39,3 +37,17 @@ docker run --log-driver=loki \
 ```
 
 These changes will help you start sending logs to the specified server.
+
+## Setup metrics collection 
+
+Find --incoming_connection_prometheus_metrics_string parameter in options to check where exactly your Acra Server metrics is available. 
+Edit prometheus/prometheus.yml and replace targets to host and port where your Acra Server exposes metrics. 
+
+## Run 
+```
+docker-compose up
+```
+
+
+
+
