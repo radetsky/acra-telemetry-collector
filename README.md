@@ -48,6 +48,12 @@ Edit prometheus/prometheus.yml and replace targets to host and port where your A
 docker-compose up
 ```
 
+## Play 
+
+Use 'admin:test' credentials and 'http://your-server-url:3000' to enter to grafana. Open side menu item 'Dashboards->Browse' and try to use any of built-in dashboards. 
+
+
+
 
 
 
