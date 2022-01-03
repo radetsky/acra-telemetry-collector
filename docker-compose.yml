@@ -36,6 +36,7 @@ services:
             GF_PATHS_PROVISIONING: '/app.cfg/provisioning'
         volumes:
             - ./grafana:/app.cfg
+            - ./grafana/plugins:/var/lib/grafana/plugins
         networks:
             - world
             - grafana-loki
