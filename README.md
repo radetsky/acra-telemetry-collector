@@ -8,6 +8,15 @@ Acra Telemetry collector was created to get a convenient and simple tool for tra
 git clone git@github.com:radetsky/acra-telemetry-collector.git
 ```
 
+## Life cycle of the project 
+```
+make docker-build
+make docker-run
+make docker-top
+make docker-stop
+make docker-clean
+```
+
 ## Setup Acra Server logging options 
 
 We assume that your Acra Server runs as docker container or docker-compose service. 
