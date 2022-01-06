@@ -12,4 +12,4 @@ rule_files:
 scrape_configs:
   - job_name: 'acra-server'
     static_configs:
-       - targets: ['104.248.202.177:9399']
+       - targets: [PROMETHEUS_TARGETS]

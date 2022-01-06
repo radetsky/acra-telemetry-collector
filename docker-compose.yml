@@ -13,16 +13,22 @@ services:
             - com.cossacklabs.acra-telemetry-collector=loki
 
     prometheus:
-        image: prom/prometheus:v2.32.1
+        # Build and run the container based on the official image 
+        # Add additional configuration from here. 
+        # Use environment variables declared earlier to extend configuration of prometheus 
+        build:
+            context: .
+            dockerfile: prometheus/dockerfile
+            args:
+                PROMETHEUS_TARGETS: ${PROMETHEUS_TARGETS:-"104.248.202.178:9399"}
+            labels:
+                - com.cossacklabs.acra-telemetry-collector=prometheus
+
         ports:
             - "9090:9090"
-        volumes:
-            - ./prometheus:/app.cfg
         networks:
             - world
             - grafana-prometheus
-        labels:
-            - com.cossacklabs.acra-telemetry-collector=prometheus
 
         command: >-
             --config.file=/app.cfg/prometheus.yml --storage.tsdb.path=/prometheus

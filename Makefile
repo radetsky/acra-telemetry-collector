@@ -60,7 +60,6 @@ help: ## Show this help
 	    make DOCKER_BUILD_TAGS='latest master' DOCKER_PUSH_TAGS='latest 1.2.3 test-tag' docker-push"
 
 docker-build: ## Docker : build and pull images to localhost 
-	docker-compose pull 
 	docker-compose build 
 
 docker-run: ## Run acra-telemetry-collector as docker-compose service
