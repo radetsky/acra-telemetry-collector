@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.29
+    ports:
+      - "16686:16686"
+    networks:
+      - world
+    labels:
+      - com.cossacklabs.acra-telemetry-collector=jaeger
+
+networks:
+  world: null

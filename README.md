@@ -50,17 +50,44 @@ These changes will help you start sending logs to the specified server.
 ## Setup metrics collection 
 
 Find --incoming_connection_prometheus_metrics_string parameter in options to check where exactly your Acra Server metrics is available. 
-Edit prometheus/prometheus.yml and replace targets to host and port where your Acra Server exposes metrics. 
+
+Use PROMETHEUS_TARGETS environment variable to declare where your Acra Server exposes metrics when you build project. 
+```
+make PROMETHEUS_TARGETS='localhost:9399' docker-build
+```
+This command will rebuild prometheus docker image with new target. 
+Next make docker-run will use fresh image to run container with the right target. 
+
 
 ## Run 
 ```
-docker-compose up
+make docker-run
 ```
+or 
+```
+make RUN_JAEGER=1 docker-run 
+```
+if you need to run Jaeger tracing app 
 
-## Play 
+## Play with Grafana 
 
 Use 'admin:test' credentials and 'http://your-server-url:3000' to enter to grafana. Open side menu item 'Dashboards->Browse' and try to use any of built-in dashboards. 
+We have three built-in dashboards in general folder: 
+    - AcraServer 
+    - AcraServer Log View 
+    - AcraServer Logging Dashboard 
 
+
+## Troubleshooting 
+
+### Prometheus 
+Take a look to http://$your_host:9090/config 
+You should see static_configs->targets->your targets value. Check the value.  
+
+### Logs 
+Our project exports port 3100 of Loki without any authentication parameters. 
+You may probably forgot to export logs to Loki or you have network issues. 
+Try to make HTTP request to your fresh Loki installation from server with Acra. 
 
 
 
