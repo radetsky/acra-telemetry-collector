@@ -78,6 +78,7 @@ We have three built-in dashboards in general folder:
     - AcraServer Logging Dashboard 
 
 
+
 ## Troubleshooting 
 
 ### Prometheus 
@@ -89,6 +90,15 @@ Our project exports port 3100 of Loki without any authentication parameters.
 You may probably forgot to export logs to Loki or you have network issues. 
 Try to make HTTP request to your fresh Loki installation from server with Acra. 
 
+## Stop and clean 
+
+Do not want to play anymore? You can clear your system. 
+```
+make docker-stop
+make docker-clean
+```
+
+You may run 'docker images' to check docker images list to ensure that acra-telemetry-collector has removed from server. 
 
 
 

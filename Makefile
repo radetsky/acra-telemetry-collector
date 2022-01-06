@@ -75,4 +75,4 @@ docker-clean: ## Docker : remove stopped containers and dangling images
 	$(DOCKER_BIN) images --format "{{.Repository}}:{{.Tag}}:{{.ID}}" | grep "grafana/grafana:8.3.3" | cut -f 3 -d ":" | xargs docker rmi 
 	$(DOCKER_BIN) images --format "{{.Repository}}:{{.Tag}}:{{.ID}}" | grep "jaegertracing/all-in-one:1.29" | cut -f 3 -d ":" | xargs docker rmi 
 	$(DOCKER_BIN) images --format "{{.Repository}}:{{.Tag}}:{{.ID}}" | grep "grafana/loki:master" | cut -f 3 -d ":" | xargs docker rmi 
-	${DOCKER_BIN) image prune -f -a --filter "label=com.cossacklabs.acra-telemetry-collector=prometheus"
+	$(DOCKER_BIN) image prune -f -a --filter "label=com.cossacklabs.acra-telemetry-collector=prometheus"
