@@ -46,12 +46,9 @@ help: ## Show this help
                            ($(PROMETHEUS_TARGETS) by default)\n\
 	    ${COLOR_ENVVAR}RUN_JAEGER${COLOR_DEFAULT}           - To run jaeger tracing app\n\
 	                           (usually - not, undefined by default)\n\
-	    ${COLOR_ENVVAR}DOCKER_BUILD_TAGS${COLOR_DEFAULT}    - Tags list for building\n\
-	                           (delimiter - single space, '$(DOCKER_BUILD_TAGS)' by default)\n\
-	    ${COLOR_ENVVAR}DOCKER_PUSH_TAGS${COLOR_DEFAULT}     - Tags list for  pushing into remote registry\n\
-	                           (delimiter - single space, '$(DOCKER_PUSH_TAGS)' by default)\n\
 	  Usage example:\n\
-	    make DOCKER_BUILD_TAGS='latest master' DOCKER_PUSH_TAGS='latest 1.2.3 test-tag' docker-push"
+        make PROMETHEUS_TARGETS='localhost:9399' docker-build\n\
+        make RUN_JAEGER=1 docker-run"
 
 docker-build: ## Docker : build and pull images to localhost 
 	docker-compose build 
