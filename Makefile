@@ -8,6 +8,8 @@ APP_NAME := acra-telemetry-collector
 BUILD_DATE := $(shell date -u +'%Y-%m-%dT%H:%M:%SZ')
 BUILD_DIR := build
 
+PROMETHEUS_TARGETS := 'localhost:9399'
+
 #----- Git ---------------------------------------------------------------------
 
 GIT_VERSION := $(shell if [ -d ".git" ]; then git version; fi 2>/dev/null)
@@ -24,17 +26,6 @@ endif
 #----- Docker ------------------------------------------------------------------
 DOCKER_BIN := $(shell command -v docker 2> /dev/null)
 
-DOCKER_REGISTRY_HOST ?= localhost
-DOCKER_REGISTRY_PATH ?= cossacklabs
-
-DOCKER_IMAGE_NAME := $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_PATH)/$(APP_NAME)
-DOCKER_IMAGE_NAME_LOCAL := $(DOCKER_REGISTRY_PATH)/$(APP_NAME)
-DOCKER_DOCKERFILE := ./docker/$(APP_NAME).Dockerfile
-DOCKER_IMAGE_CONTEXT := .
-
-DOCKER_BUILD_TAGS ?= rad
-DOCKER_PUSH_TAGS ?= rad
-
 #----- Makefile ----------------------------------------------------------------
 
 COLOR_DEFAULT=\033[0m
@@ -48,8 +39,8 @@ COLOR_ENVVAR=\033[1m
 help: ## Show this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[93m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 	@echo "\n  Allowed for overriding next properties:\n\n\
-	    ${COLOR_ENVVAR}DOCKER_REGISTRY_HOST${COLOR_DEFAULT} - Registry host\n\
-	                           ('$(DOCKER_REGISTRY_HOST)' by default)\n\
+	    ${COLOR_ENVVAR}PROMETHEUS_TARGETS${COLOR_DEFAULT} - Prometheus targets\n\
+                           ($(PROMETHEUS_TARGETS) by default)\n\
 	    ${COLOR_ENVVAR}DOCKER_REGISTRY_PATH${COLOR_DEFAULT} - Registry path\n\
 	                           (usually - company name, '$(DOCKER_REGISTRY_PATH)' by default)\n\
 	    ${COLOR_ENVVAR}DOCKER_BUILD_TAGS${COLOR_DEFAULT}    - Tags list for building\n\
@@ -74,6 +65,6 @@ docker-stop: ## Terminate acra-telemetry-collector
 docker-clean: ## Docker : remove stopped containers and dangling images
 	$(DOCKER_BIN) container prune -f --filter "label=com.docker.compose.project=acra-telemetry-collector"
 	$(DOCKER_BIN) images --format "{{.Repository}}:{{.Tag}}:{{.ID}}" | grep "prom/prometheus:v2.32.1" | cut -f 3 -d ":" | xargs docker rmi 
-	$(DOCKER_BIN) images --format "{{.Repository}}:{{.Tag}}:{{.ID}}" | grep "grafana/grafana:8.3.3" | cut -f 3 -d ":" | xargs docker rmi 
+	$(DOCKER_BIN) images --format "{{.Repository}}:{{.Tag}}:{{.ID}}" | grep "acra-telemetry-collector_prometheus:latest" | cut -f 3 -d ":" | xargs docker rmi 
 	$(DOCKER_BIN) images --format "{{.Repository}}:{{.Tag}}:{{.ID}}" | grep "jaegertracing/all-in-one:1.29" | cut -f 3 -d ":" | xargs docker rmi 
 	$(DOCKER_BIN) images --format "{{.Repository}}:{{.Tag}}:{{.ID}}" | grep "grafana/loki:master" | cut -f 3 -d ":" | xargs docker rmi 
