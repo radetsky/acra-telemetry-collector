@@ -111,7 +111,7 @@ You can't find any interesting UI here. Use Grafana UI to find any collected log
 
 http://127.0.0.1:16686/
 
-This is Jaeger UI. 
+This is Jaeger UI. Find the service called 'acra-server' at the left top corner and press button 'Find traces'. 
 
 
 

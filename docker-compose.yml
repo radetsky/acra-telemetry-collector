@@ -19,8 +19,6 @@ services:
         build:
             context: .
             dockerfile: prometheus/dockerfile
-            labels:
-                - com.cossacklabs.acra-telemetry-collector=prometheus
 
         ports:
             - "9090:9090"
