@@ -1,8 +1,9 @@
 FROM prom/prometheus:v2.32.1
 LABEL com.cossacklabs.acra-telemetry-collector=prometheus 
-ARG PROMETHEUS_TARGETS
 
 USER root 
 RUN mkdir /app.cfg 
 COPY prometheus/prometheus.yml /app.cfg/
-RUN sed -i "s/PROMETHEUS_TARGETS/${PROMETHEUS_TARGETS}/g" /app.cfg/prometheus.yml
+COPY prometheus/entry.sh /
+
+ENTRYPOINT [ "/entry.sh" ]

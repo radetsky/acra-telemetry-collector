@@ -1,6 +1,6 @@
-docker.DEFAULT_GOAL := all
+docker.DEFAULT_GOAL := help
 
-.PHONY: all help docker-build docker-clean
+.PHONY: help docker-build docker-run docker-top docker-stop docker-clean 
 #===== Variables ===============================================================
 
 #----- Application -------------------------------------------------------------
@@ -42,12 +42,10 @@ COLOR_ENVVAR=\033[1m
 help: ## Show this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[93m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 	@echo "\n  Allowed for overriding next properties:\n\n\
-	    ${COLOR_ENVVAR}PROMETHEUS_TARGETS${COLOR_DEFAULT} - Prometheus targets\n\
-                           ($(PROMETHEUS_TARGETS) by default)\n\
-	    ${COLOR_ENVVAR}RUN_JAEGER${COLOR_DEFAULT}           - To run jaeger tracing app\n\
-	                           (usually - not, undefined by default)\n\
+	    ${COLOR_ENVVAR}PROMETHEUS_TARGETS${COLOR_DEFAULT} - Prometheus targets ($(PROMETHEUS_TARGETS) by default)\n\
+	    ${COLOR_ENVVAR}RUN_JAEGER${COLOR_DEFAULT}         - To run jaeger tracing app (usually - not, undefined by default)\n\
 	  Usage example:\n\
-        make PROMETHEUS_TARGETS='localhost:9399' docker-build\n\
+        make PROMETHEUS_TARGETS='localhost:9399' docker-run\n\
         make RUN_JAEGER=1 docker-run"
 
 docker-build: ## Docker : build and pull images to localhost 
@@ -66,7 +64,7 @@ docker-top: ## Show running services
 docker-stop: ## Terminate acra-telemetry-collector 
 	docker-compose -p acra-telemetry-collector -f ./docker-compose.yml -f ./jaeger/docker-compose.yml  stop 
 
-docker-clean: ## Docker : remove stopped containers and dangling images
+docker-clean: ## Remove stopped containers and dangling images
 	$(DOCKER_BIN) container prune -f --filter "label=com.docker.compose.project=acra-telemetry-collector"
 	$(DOCKER_BIN) images --format "{{.Repository}}:{{.Tag}}:{{.ID}}" | grep "acra-telemetry-collector_prometheus:latest" | cut -f 3 -d ":" | xargs docker rmi 
 	$(DOCKER_BIN) images --format "{{.Repository}}:{{.Tag}}:{{.ID}}" | grep "grafana/grafana:8.3.3" | cut -f 3 -d ":" | xargs docker rmi 
